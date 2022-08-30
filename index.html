@@ -54,9 +54,16 @@
 <body>
     <div id="container">
         <div id="chart">
-            <canvas id="canvas"></canvas>
+            <!-- <canvas id="canvas"></canvas> -->
             <script>
                 function createchart() {
+                    if (document.querySelector('#canvas')) {
+                        document.querySelector('#canvas').remove();
+                    }
+                    let chart = document.querySelector('#chart');
+                    let canvas = document.createElement('canvas');
+                    canvas.id = 'canvas';
+                    chart.appendChild(canvas);
                     fetch('https://api.sao-x.com/school/0').then(function (response) {
                         return response.json();
                     }).then(function (datafile) {
@@ -69,14 +76,15 @@
                         let data = jsonfile.jsonarray.map(function (e) {
                             return e.ip;
                         });;
-                        let count = document.createElement('div');
-                        count.id = 'sum';
-                        count.innerHTML = "訪客數量統計圖" + "<br>";
-                        for (let i = 0; i < data.length; i++) {
-                            count.innerHTML += labels[i] + ' : ' + data[i] + '人<br>';
+                        if (document.querySelector('#sum')==null) {
+                            let count = document.createElement('div');
+                            count.id = 'sum';
+                            count.innerHTML = "訪客數量統計圖" + "<br>";
+                            for (let i = 0; i < data.length; i++) {
+                                count.innerHTML += labels[i] + ' : ' + data[i] + '人<br>';
+                            }
+                            document.querySelector('#container').appendChild(count);
                         }
-                        document.querySelector('#container').appendChild(count);
-
                         let ctx = document.getElementById('canvas').getContext('2d');
                         let config =
                         {
@@ -118,10 +126,13 @@
 
                             }
                         }
+                        
                         let chart = new Chart(ctx, config);
+                        
                     })
                 }
-                createchart();
+                // createchart();
+                setInterval(createchart, 5000);
             // let jsonfile = ".json_encode(["jsonarray" => $json]);
             </script>
             <!-- <script type="text/javascript" src="board.json"></script> -->
