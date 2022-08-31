@@ -85,6 +85,12 @@
                             }
                             document.querySelector('#container').appendChild(count);
                         }
+                        else {
+                            document.querySelector('#sum').innerHTML = "訪客數量統計圖" + "<br>";
+                            for (let i = 0; i < data.length; i++) {
+                                document.querySelector('#sum').innerHTML += labels[i] + ' : ' + data[i] + '人<br>';
+                            }
+                        }
                         let ctx = document.getElementById('canvas').getContext('2d');
                         let config =
                         {
